@@ -1,6 +1,6 @@
 # Advent of Code 2022
 
-Solutions for the Advent Code 2022 puzzles found here https://adventofcode.com/.
+Solutions for the Advent of Code 2022 puzzles found here https://adventofcode.com/.
 
 ## Getting Started
 
