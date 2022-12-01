@@ -10,7 +10,3 @@ Feel free to browse. Code quality not guaranteed.
 
 * Visual Studio 2019
 * .NET Core 3.1
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
