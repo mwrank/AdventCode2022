@@ -1,0 +1,16 @@
+# Advent Code 2022
+
+Solutions for the Advent Code 2022 puzzles found here https://adventofcode.com/.
+
+## Getting Started
+
+Feel free to browse. Code quality not guaranteed.
+
+## Built With
+
+* Visual Studio 2019
+* .NET Core 3.1
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
