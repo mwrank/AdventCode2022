@@ -12,7 +12,6 @@ namespace AdventCode2022.Tests
         {
             string path = @"Data\Day1\sample.txt";
             int result = Day1.Part1(path);
-
             Assert.AreEqual(result, 24000);
         }
 
@@ -21,7 +20,6 @@ namespace AdventCode2022.Tests
         {
             string path = @"Data\Day1\sample.txt";
             int result = Day1.Part2(path);
-
             Assert.AreEqual(result, 45000);
         } 
         #endregion
