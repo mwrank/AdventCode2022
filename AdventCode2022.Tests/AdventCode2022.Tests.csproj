@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AdventCode2022.Library\AdventCode2022.Library.csproj" />
+    <ProjectReference Include="..\AdventCode2022.Puzzles\AdventCode2022.Puzzles.csproj" />
   </ItemGroup>
 
   <ItemGroup>

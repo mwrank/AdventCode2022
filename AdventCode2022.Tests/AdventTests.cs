@@ -8,7 +8,7 @@ namespace AdventCode2022.Tests
     {
         #region Day1
         [TestMethod]
-        public void Day1_Part1()
+        public void Day1Part1()
         {
             string path = @"Data\Day1\sample.txt";
             int result = Day1.Part1(path);
@@ -17,7 +17,7 @@ namespace AdventCode2022.Tests
         }
 
         [TestMethod]
-        public void Day1_Part2()
+        public void Day1Part2()
         {
             string path = @"Data\Day1\sample.txt";
             int result = Day1.Part2(path);
