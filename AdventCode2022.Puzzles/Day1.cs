@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AdventCode2022.Library
+namespace AdventCode2022.Puzzles
 {
     public static class Day1
     {

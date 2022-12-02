@@ -1,4 +1,4 @@
-using AdventCode2022.Library;
+using AdventCode2022.Puzzles;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AdventCode2022.Tests
