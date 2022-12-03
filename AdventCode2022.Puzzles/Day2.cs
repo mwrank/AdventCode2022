@@ -7,6 +7,11 @@ namespace AdventCode2022.Puzzles
 {
     public static class Day2
     {
+        /// <summary>
+        /// Advent code day 2 part 1
+        /// </summary>
+        /// <param name="filePath">Path to the file</param>
+        /// <returns>Sum score based on strategy guide</returns>
         public static int Part1(string filePath)
         {
             StrategyGuide strategyGuide = new StrategyGuide();
@@ -14,6 +19,11 @@ namespace AdventCode2022.Puzzles
             return strategyGuide.Hands.Sum(x => x.GetScore());
         }
 
+        /// <summary>
+        /// Advent code day 2 part 2
+        /// </summary>
+        /// <param name="filePath">Path to the file</param>
+        /// <returns>Sum score based on strategy guide</returns>
         public static int Part2(string filePath)
         {
             StrategyGuide strategyGuide = new StrategyGuide();
@@ -97,6 +107,10 @@ namespace AdventCode2022.Puzzles
             }
         }
 
+        /// <summary>
+        /// Get score
+        /// </summary>
+        /// <returns>Sum of option and outcome values</returns>
         public int GetScore()
         {
             int optionVal = (int)Me;
@@ -115,6 +129,11 @@ namespace AdventCode2022.Puzzles
             Hands = new List<Hand>();
         }
 
+        /// <summary>
+        /// Decrypts hand
+        /// </summary>
+        /// <param name="letter">Letter to decrypt</param>
+        /// <returns>Option</returns>
         public Option DecryptOption(string letter)
         {
             if (letter == "A" || letter == "X")
@@ -127,6 +146,11 @@ namespace AdventCode2022.Puzzles
                 return Option.Scissors;
         }
 
+        /// <summary>
+        /// Decrypts outcome
+        /// </summary>
+        /// <param name="letter">Letter to decrypt</param>
+        /// <returns>Outcome</returns>
         public Outcome DecryptOutcome(string letter)
         {
             if (letter == "X")
@@ -139,6 +163,11 @@ namespace AdventCode2022.Puzzles
                 return Outcome.Win;
         }
 
+        /// <summary>
+        /// Build strategy guide from file
+        /// </summary>
+        /// <param name="filePath">Path to file</param>
+        /// <param name="isOutcomeSecondColumn">Is second column outcome or hand</param>
         public void BuildFromFile(string filePath, bool isOutcomeSecondColumn = false)
         {
             if (isOutcomeSecondColumn)
