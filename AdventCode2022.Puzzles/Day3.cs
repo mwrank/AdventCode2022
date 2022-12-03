@@ -53,7 +53,6 @@ namespace AdventCode2022.Puzzles
 
             foreach(RuneSack s in sacks)
             {
-                var temp = s.Compartments[0].Items.Where(x => s.Compartments[1].Items.Select(i => i.Text).Contains(x.Text)).First();
                 result += s.Compartments[0].Items.Where(x => s.Compartments[1].Items.Select(i => i.Text).Contains(x.Text)).First().Value;
             }
 
