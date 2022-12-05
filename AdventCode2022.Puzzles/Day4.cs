@@ -19,7 +19,7 @@ namespace AdventCode2022.Puzzles
                 foreach (string part in parts)
                 {
                     string[] sections = part.Split("-");
-                    Elf2 elf = new Elf2(int.Parse(sections[0]), int.Parse(sections[1]));
+                    SweeperElf elf = new SweeperElf(int.Parse(sections[0]), int.Parse(sections[1]));
                     pair.Elves.Add(elf);
                 }
 
@@ -42,11 +42,11 @@ namespace AdventCode2022.Puzzles
         }
     }
 
-    internal class Elf2
+    internal class SweeperElf
     {
         public int[] AssignedRange { get; set; }
 
-        public Elf2(int start, int end)
+        public SweeperElf(int start, int end)
         {
             AssignedRange = new int[] { start, end };
         }
@@ -68,11 +68,11 @@ namespace AdventCode2022.Puzzles
 
     internal class AssignedPair
     {
-        public List<Elf2> Elves { get; set; }
+        public List<SweeperElf> Elves { get; set; }
 
         public AssignedPair()
         {
-            Elves = new List<Elf2>();
+            Elves = new List<SweeperElf>();
         }
 
         public List<int> AllSections()
