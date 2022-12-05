@@ -72,7 +72,7 @@ namespace AdventCode2022.Tests
         [TestMethod]
         public void Day4Part2()
         {
-            string path = @"Data\Day4\full.txt";
+            string path = @"Data\Day4\sample.txt";
             int result = Day4.Part2(path);
             Assert.AreEqual(result, 4);
         }
