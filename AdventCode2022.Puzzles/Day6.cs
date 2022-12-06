@@ -7,6 +7,11 @@ namespace AdventCode2022.Puzzles
 {
     public static class Day6
     {
+        /// <summary>
+        /// Advent code day 6 part 1
+        /// </summary>
+        /// <param name="filePath">Path to the file</param>
+        /// <returns>Index of marker start</returns>
         public static int Part1(string filePath)
         {
             string firstLine = System.IO.File.ReadLines(filePath).First();
@@ -14,6 +19,11 @@ namespace AdventCode2022.Puzzles
             return device.FindFirstPacketMarker(firstLine, 4);
         }
 
+        /// <summary>
+        /// Advent code day 6 part 2
+        /// </summary>
+        /// <param name="filePath">Path to the file</param>
+        /// <returns>Index of marker start</returns>
         public static int Part2(string filePath)
         {
             string firstLine = System.IO.File.ReadLines(filePath).First();
@@ -26,24 +36,25 @@ namespace AdventCode2022.Puzzles
     {
         public CommunicationDevice() { }
 
+        /// <summary>
+        /// Find first packet marker
+        /// </summary>
+        /// <param name="signal">Signal to check</param>
+        /// <param name="length">Length of window to check for duplicate char</param>
+        /// <returns>Index of marker start</returns>
         public int FindFirstPacketMarker(string signal, int length)
         {
-            char[] signalArr = signal.ToCharArray();
+            char[] signalArr = signal.ToCharArray(); // make an array
 
-            for(int i = (length - 1); i < signalArr.Count(); i++)
+            for(int i = 0; i < signalArr.Count(); i++)
             {
-                char curr = signalArr[i];
-                List<char> prev = new List<char>();
-
-                for (int k = 0; k < length; k++)
-                {
-                    prev.Add(signalArr[i - k]);
-                }
-
+                // use skip and take to create sliding window
+                List<char> prev = signalArr.Skip(i).Take(length).ToList();
                 int distinctCount = prev.Distinct().Count();
 
+                // check if count = distinct count
                 if (distinctCount == prev.Count())
-                    return (i + 1);
+                    return (i + length);
             }
 
             return -1;
