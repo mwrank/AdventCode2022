@@ -111,6 +111,24 @@ namespace AdventCode2022.Tests
             string path = @"Data\Day6\sample.txt";
             int result = Day6.Part2(path);
             Assert.AreEqual(result, 19);
+        }
+        #endregion
+
+        #region Day7
+        [TestMethod]
+        public void Day7Part1()
+        {
+            string path = @"Data\Day7\sample.txt";
+            int result = Day7.Part1(path);
+            Assert.AreEqual(result, 95437);
+        }
+
+        [TestMethod]
+        public void Day7Part2()
+        {
+            string path = @"Data\Day7\sample.txt";
+            int result = Day7.Part2(path);
+            Assert.AreEqual(result, 24933642);
         } 
         #endregion
     }
