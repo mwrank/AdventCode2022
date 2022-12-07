@@ -7,6 +7,11 @@ namespace AdventCode2022.Puzzles
 {
     public static class Day7
     {
+        /// <summary>
+        /// Read the input file
+        /// </summary>
+        /// <param name="filePath">Path to the file</param>
+        /// <returns>Tree of file structure</returns>
         private static List<DeviceFolder> ReadInputFile(string filePath)
         {
             DeviceFolder currentDirectory = new DeviceFolder() { Name = "/" };
@@ -16,52 +21,62 @@ namespace AdventCode2022.Puzzles
 
             foreach (string line in System.IO.File.ReadLines(filePath))
             {
-                if (line.StartsWith("$"))
+                if (line.StartsWith("$")) // it's a command
                 {
                     string[] parts = line.Split(" ");
                     string cmd = parts[1];
 
+                    // is it a change directory or list command
                     lastCommand = cmd == "cd" ? DeviceCommand.CD : DeviceCommand.LS;
 
-                    if (lastCommand == DeviceCommand.CD)
+                    if (lastCommand == DeviceCommand.CD) // if change dir
                     {
-                        string param = parts[2];
+                        string param = parts[2]; // get the directory name
 
-                        if (param == "/")
+                        if (param == "/") //if root
                         {
-                            currentDirectory = rootDirectory;
+                            currentDirectory = rootDirectory; // set root
                         }
                         else if (param == "..")
                         {
+                            // move up a folder in the tree
                             currentDirectory = currentDirectory.ParentFolder;
                         }
                         else
                         {
+                            // create the new directory
                             DeviceFolder folder = new DeviceFolder()
                             {
                                 Name = param,
                                 ParentFolder = currentDirectory
                             };
 
+                            // add to subfolders
                             currentDirectory.SubFolders.Add(folder);
+
+                            // set current dir
                             currentDirectory = folder;
 
+                            // add to total list of directories
                             allDirectories.Add(currentDirectory);
                         }
                     }
                 }
-                else
+                else // not a command
                 {
                     string[] parts = line.Split(" ");
 
+                    // make sure it's a file
                     if (parts[0] != "dir")
                     {
+                        // create the file
                         DeviceFile file = new DeviceFile()
                         {
                             Name = parts[1],
                             Size = int.Parse(parts[0])
                         };
 
+                        // add the file
                         currentDirectory.Files.Add(file);
                     }
                 }
@@ -70,12 +85,22 @@ namespace AdventCode2022.Puzzles
             return allDirectories;
         }
 
+        /// <summary>
+        /// Advent code day 7 part 1
+        /// </summary>
+        /// <param name="filePath">Path to file</param>
+        /// <returns>Total size of all directories under 100000</returns>
         public static int Part1(string filePath)
         {
             List<DeviceFolder> directories = ReadInputFile(filePath);
             return directories.Where(x => x.TotalSize() <= 100000).Sum(x => x.TotalSize());
         }
 
+        /// <summary>
+        /// Advent code day 7 part 2
+        /// </summary>
+        /// <param name="filePath">Path to file</param>
+        /// <returns>Smallest directory that needs to be deleted to make enough free space</returns>
         public static int Part2(string filePath)
         {
             List<DeviceFolder> directories = ReadInputFile(filePath);
@@ -110,6 +135,10 @@ namespace AdventCode2022.Puzzles
             Files = new List<DeviceFile>();
         }
 
+        /// <summary>
+        /// Calc total size of directory
+        /// </summary>
+        /// <returns></returns>
         public int TotalSize()
         {
             int total = 0;
@@ -121,6 +150,7 @@ namespace AdventCode2022.Puzzles
 
             if(SubFolders.Count() > 0)
             {
+                // call recursive to include subfolders
                 foreach (DeviceFolder folder in SubFolders)
                     total += folder.TotalSize();
             }
