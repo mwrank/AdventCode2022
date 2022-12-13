@@ -2,43 +2,41 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace AdventCode2022.Puzzles
 {
     public static class Day11
     {
-        public static int Part1(string filePath)
+        public static BigInteger Part1(string filePath)
         {
-            int linesPerMonkey = 7;
             MonkeyInTheMiddle game = new MonkeyInTheMiddle();
             List<string> lines = System.IO.File.ReadLines(filePath).ToList();
-            lines.Add(string.Empty);
-
-            for(int i = 0; i < lines.Count(); i += linesPerMonkey)
-            {
-                int monkeyId = int.Parse(lines[i].Split(" ")[1].Replace(":", ""));
-                string[] items = lines[i + 1].Replace("Starting items: ", "").Trim().Split(",");
-                string operation = lines[i + 2].Replace("Operation: new = ", "").Trim();
-                int modulus = int.Parse(lines[i + 3].Split(" ")[5]);
-                int trueMonkey = int.Parse(lines[i + 4].Split(" ")[9]);
-                int falseMonkey = int.Parse(lines[i + 5].Split(" ")[9]);
-
-                Monkey monkey = new Monkey(monkeyId, operation, modulus, trueMonkey, falseMonkey);
-
-                foreach (string item in items)
-                {
-                    monkey.Items.Enqueue(int.Parse(item));
-                }
-
-                game.Monkeys.Add(monkey);
-            }
+            game.BuildFromLines(lines);
 
             for(int round = 0; round < 20; round++)
             {
                 foreach(Monkey m in game.Monkeys)
                 {
-                    game.ProcessItems(m.Id);
+                    game.ProcessItems(m.Id, 3);
+                }
+            }
+
+            return game.MonkeyBusinessScore();
+        }
+
+        public static BigInteger Part2(string filePath)
+        {
+            MonkeyInTheMiddle game = new MonkeyInTheMiddle();
+            List<string> lines = System.IO.File.ReadLines(filePath).ToList();
+            game.BuildFromLines(lines);
+
+            for (int round = 0; round < 10000; round++)
+            {
+                foreach (Monkey m in game.Monkeys)
+                {
+                    game.ProcessItems(m.Id, 1);
                 }
             }
 
@@ -49,39 +47,81 @@ namespace AdventCode2022.Puzzles
     internal class MonkeyInTheMiddle
     {
         public List<Monkey> Monkeys { get; set; }
+        private BigInteger LCM { get; set; }
 
         public MonkeyInTheMiddle()
         {
             Monkeys = new List<Monkey>();
         }
 
-        public int MonkeyBusinessScore()
+        public void BuildFromLines(List<string> lines)
         {
-            List<Monkey> selected = Monkeys.OrderByDescending(x => x.Inspections).Take(2).ToList();
-            return selected.First().Inspections * selected.Last().Inspections;
+            lines.Add(string.Empty);
+
+            for (int i = 0; i < lines.Count(); i += 7)
+            {
+                int monkeyId = int.Parse(lines[i].Split(" ")[1].Replace(":", ""));
+                string[] items = lines[i + 1].Replace("Starting items: ", "").Trim().Split(",");
+                string operation = lines[i + 2].Replace("Operation: new = ", "").Trim();
+                int divisibleTest = int.Parse(lines[i + 3].Split(" ")[5]);
+                int trueMonkey = int.Parse(lines[i + 4].Split(" ")[9]);
+                int falseMonkey = int.Parse(lines[i + 5].Split(" ")[9]);
+
+                Monkey monkey = new Monkey(monkeyId, operation, divisibleTest, trueMonkey, falseMonkey);
+
+                foreach (string item in items)
+                {
+                    monkey.Items.Enqueue(int.Parse(item));
+                }
+
+                Monkeys.Add(monkey);
+            }
         }
 
-        private void Throw(Monkey from, Monkey to, int newWorryScore)
+        public BigInteger MonkeyBusinessScore()
+        {
+            List<Monkey> selected = Monkeys.OrderByDescending(x => x.InspectionCount).Take(2).ToList();
+            return BigInteger.Multiply(selected.First().InspectionCount, selected.Last().InspectionCount);
+        }
+
+        private void Throw(Monkey from, Monkey to, BigInteger newWorryScore)
         {
             from.Items.Dequeue();
             to.Items.Enqueue(newWorryScore);
         }
 
-        public void ProcessItems(int index)
+        public void ProcessItems(int index, int worryDivider)
         {
+            if(LCM == 0)
+            {
+                LCM = CalcLCM(Monkeys.Select(x => x.DivisibleTest).ToArray());
+            }
+
             Monkey monkey = Monkeys.ElementAt(index);
 
             while (monkey.Items.Count() > 0)
             {
-                int operaationResult = monkey.Inspect() / 3;
-                bool testResult = monkey.Test(operaationResult);
+                BigInteger operationResult = monkey.Inspect();
+                operationResult =(operationResult / worryDivider) % LCM;
+
+                bool testResult = monkey.Test(operationResult);
 
                 Monkey throwTo = testResult ?
-                    Monkeys.ElementAt(monkey.TrueMonkeyId) :
-                    Monkeys.ElementAt(monkey.FalseMonkeyId);
+                    Monkeys.ElementAt(monkey.IfTrueMonkeyId) :
+                    Monkeys.ElementAt(monkey.IfFalseMonkeyId);
 
-                Throw(monkey, throwTo, operaationResult);
+                Throw(monkey, throwTo, operationResult);
             }
+        }
+
+        private int CalcGCD(int n1, int n2)
+        {
+            return n2 == 0 ? n1 : CalcGCD(n2, n1 % n2);
+        }
+
+        private int CalcLCM(int[] numbers)
+        {
+            return numbers.Aggregate((s, val) => s * val);
         }
     }
 
@@ -89,36 +129,47 @@ namespace AdventCode2022.Puzzles
     {
         public int Id { get; set; }
         public string OperationText { get; set; }
-        public int ModulusTest { get; set; }
-        public int TrueMonkeyId { get; set; }
-        public int FalseMonkeyId { get; set; }
-        public int Inspections { get; set; }
-        public Queue<int> Items { get; set; }
+        public int DivisibleTest { get; set; }
+        public int IfTrueMonkeyId { get; set; }
+        public int IfFalseMonkeyId { get; set; }
+        public int InspectionCount { get; set; }
+        public Queue<BigInteger> Items { get; set; }
 
-        public Monkey(int id, string operation, int modulus, int trueMonkey, int falseMonkey)
+        public Monkey(int id, string operation, int divisibleTest, int trueMonkey, int falseMonkey)
         {
             Id = id;
             OperationText = operation;
-            ModulusTest = modulus;
-            TrueMonkeyId = trueMonkey;
-            FalseMonkeyId = falseMonkey;
-            Inspections = 0;
-            Items = new Queue<int>();
+            DivisibleTest = divisibleTest;
+            IfTrueMonkeyId = trueMonkey;
+            IfFalseMonkeyId = falseMonkey;
+            InspectionCount = 0;
+            Items = new Queue<BigInteger>();
         }
 
 
-        public int Inspect()
+        public BigInteger Inspect()
         {
             string operation = OperationText.Replace("old", Items.Peek().ToString());
-            Inspections++;
+            string[] operationParts = operation.Split(" ");
+            InspectionCount++;
 
-            DataTable dt = new DataTable();
-            return int.Parse(dt.Compute(operation, "").ToString());
+            if(operationParts[1] == "*")
+            {
+                return BigInteger.Multiply(
+                    BigInteger.Parse(operationParts[0]),
+                    BigInteger.Parse(operationParts[2]));
+            }
+            else
+            {
+                return BigInteger.Add(
+                    BigInteger.Parse(operationParts[0]),
+                    BigInteger.Parse(operationParts[2]));
+            }
         }
 
-        public bool Test(int num)
+        public bool Test(BigInteger num)
         {
-            return (num % ModulusTest) == 0;
+            return (num % DivisibleTest) == 0;
         }
     }
 }

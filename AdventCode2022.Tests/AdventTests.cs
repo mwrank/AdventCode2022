@@ -1,5 +1,6 @@
 using AdventCode2022.Puzzles;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Numerics;
 
 namespace AdventCode2022.Tests
 {
@@ -154,7 +155,7 @@ namespace AdventCode2022.Tests
         [TestMethod]
         public void Day9Part1()
         {
-            string path = @"Data\Day9\full.txt";
+            string path = @"Data\Day9\sample.txt";
             int result = Day9.Part1(path);
             Assert.AreEqual(result, 13);
         }
@@ -162,9 +163,9 @@ namespace AdventCode2022.Tests
         [TestMethod]
         public void Day9Part2()
         {
-            string path = @"Data\Day9\full.txt";
+            string path = @"Data\Day9\sample2.txt";
             int result = Day9.Part2(path);
-            Assert.AreEqual(result, 13);
+            Assert.AreEqual(result, 36);
         }
         #endregion
 
@@ -183,9 +184,17 @@ namespace AdventCode2022.Tests
         public void Day11Part1()
         {
             string path = @"Data\Day11\sample.txt";
-            int result = Day11.Part1(path);
+            BigInteger result = Day11.Part1(path);
             Assert.AreEqual(result, 10605);
-        } 
+        }
+
+        [TestMethod]
+        public void Day11Part2()
+        {
+            string path = @"Data\Day11\sample.txt";
+            BigInteger result = Day11.Part2(path);
+            Assert.AreEqual(result, 2713310158);
+        }
         #endregion
     }
 }
