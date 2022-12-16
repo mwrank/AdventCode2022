@@ -7,6 +7,11 @@ namespace AdventCode2022.Puzzles
 {
     public static class Day8
     {
+        /// <summary>
+        /// Advent code day 8 part 1
+        /// </summary>
+        /// <param name="filePath">Path to file</param>
+        /// <returns>Number of trees are visible from outside the grid</returns>
         public static int Part1(string filePath)
         {
             Forest forest = new Forest();
@@ -26,6 +31,11 @@ namespace AdventCode2022.Puzzles
             return totalVisible;
         }
 
+        /// <summary>
+        /// Advent code day 8 part 2
+        /// </summary>
+        /// <param name="filePath">Path to file</param>
+        /// <returns>Highest scenic score</returns>
         public static int Part2(string filePath)
         {
             Forest forest = new Forest();
@@ -59,6 +69,10 @@ namespace AdventCode2022.Puzzles
 
         public Forest() { }
 
+        /// <summary>
+        /// Reads file into 2D array of trees
+        /// </summary>
+        /// <param name="filePath">Path to file</param>
         public void BuildFromMap(string filePath)
         {
             IEnumerable<string> lines = System.IO.File.ReadLines(filePath);
@@ -75,12 +89,24 @@ namespace AdventCode2022.Puzzles
             }
         }
 
+        /// <summary>
+        /// Is visible from any direction
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public bool IsVisible(int row, int col)
         {
             return IsVisibleFromEast(row, col) || IsVisibleFromWest(row, col) ||
                 IsVisibleFromSouth(row, col) || IsVisibleFromNorth(row, col);
         }
 
+        /// <summary>
+        /// Is visible from the east
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public bool IsVisibleFromEast(int row, int col)
         {
             int height = Trees[row, col].Height;
@@ -99,6 +125,12 @@ namespace AdventCode2022.Puzzles
             return true;
         }
 
+        /// <summary>
+        /// Is visible from the west
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public bool IsVisibleFromWest(int row, int col)
         {
             int height = Trees[row, col].Height;
@@ -116,6 +148,12 @@ namespace AdventCode2022.Puzzles
             return true;
         }
 
+        /// <summary>
+        /// Is visible from the north
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public bool IsVisibleFromNorth(int row, int col)
         {
             int height = Trees[row, col].Height;
@@ -133,6 +171,12 @@ namespace AdventCode2022.Puzzles
             return true;
         }
 
+        /// <summary>
+        /// Is visible from the south
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public bool IsVisibleFromSouth(int row, int col)
         {
             int height = Trees[row, col].Height;
@@ -151,12 +195,25 @@ namespace AdventCode2022.Puzzles
             return true;
         }
 
+        /// <summary>
+        /// Scenic score
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns>Number of trees visible * each direction to calc score</returns>
         public int ScenicScore(int row, int col)
         {
             return TreesSeenEast(row, col) * TreesSeenWest(row, col) *
                 TreeSeenSouth(row, col) * TreesSeenNorth(row, col);
         }
 
+
+        /// <summary>
+        /// Number of trees seen to the east
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public int TreesSeenEast(int row, int col)
         {
             int height = Trees[row, col].Height;
@@ -175,6 +232,12 @@ namespace AdventCode2022.Puzzles
             return numberSeen;
         }
 
+        /// <summary>
+        /// Number of trees seen to the west
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public int TreesSeenWest(int row, int col)
         {
             int height = Trees[row, col].Height;
@@ -192,6 +255,12 @@ namespace AdventCode2022.Puzzles
             return numberSeen;
         }
 
+        /// <summary>
+        /// Number of trees seen to the north
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public int TreesSeenNorth(int row, int col)
         {
             int height = Trees[row, col].Height;
@@ -209,6 +278,12 @@ namespace AdventCode2022.Puzzles
             return numberSeen;
         }
 
+        /// <summary>
+        /// Number of trees seen to the south
+        /// </summary>
+        /// <param name="row">Row in grid</param>
+        /// <param name="col">Col in grid</param>
+        /// <returns></returns>
         public int TreeSeenSouth(int row, int col)
         {
             int height = Trees[row, col].Height;

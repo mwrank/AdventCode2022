@@ -150,12 +150,21 @@ namespace AdventCode2022.Puzzles
             Y = y;
         }
 
+        /// <summary>
+        /// Move specified number of rows and columns
+        /// </summary>
+        /// <param name="x">Rows to move</param>
+        /// <param name="y">Colum,ns to move</param>
         public void Move(int x, int y)
         {
             X += x;
             Y += y;
         }
 
+        /// <summary>
+        /// Follow the specified knotpoint
+        /// </summary>
+        /// <param name="head">Knotpoint to follow</param>
         public void Follow(KnotPoint head)
         {
             if(IsFar(head))
@@ -168,6 +177,11 @@ namespace AdventCode2022.Puzzles
             }
         }
 
+        /// <summary>
+        /// Checks if current knotpoint is more than 1 space away from specified knotpoint
+        /// </summary>
+        /// <param name="head">Knotpoint to check</param>
+        /// <returns></returns>
         private bool IsFar(KnotPoint head)
         {
             if (Math.Abs(X - head.X) > 1 || Math.Abs(Y - head.Y) > 1)
